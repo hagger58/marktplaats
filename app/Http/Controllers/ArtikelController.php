@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 // use App\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Artikels;
+use App\Artikel;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 class ArtikelController extends Controller
 {
@@ -24,10 +27,11 @@ class ArtikelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('pages.create'); /* makes a new article in the database */
-    }
+    // public function create()
+    // {
+    //     return view('pages.create'); /* makes a new article in the database */
+    // }
+    // NB! dit zit in de StaticPagesController
 
     /**
      * Store a newly created resource in storage.
@@ -35,18 +39,18 @@ class ArtikelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
-        //validate the data
-        $this->validate($request, array(
-            'artikelnaam' => 'required|isNotEmpty()|max:255',
-            'omschrijving' => '',
+        $v = Validator::make($request->all(), [
+            'artikelnaam' => 'bail|required|isNotEmpty()|max:255',
+            'omschrijving' => 'nullable',
             'prijs' => 'required',
-            'foto1' => '',
-            'foto2' => ''
-        ));
+            'foto1' => 'nullable',
+            'foto2' => 'nullable'
 
-            //store in the database
+        ]);
+
         $artikel = new Artikel;
 
         $artikel->artikelnaam = $request->artikelnaam;
@@ -59,9 +63,38 @@ class ArtikelController extends Controller
 
         //redirect to another page
 
-        return redirect()->route('artikels.show', $artikels->id);
+        // return redirect()->route('artikels.show', $artikel->id);
+
 
     }
+
+    // public function store(Request $request)
+    // {
+    //     //validate the data
+    //     $this->validate($request, array(
+    //         'artikelnaam' => 'required|isNotEmpty()|max:255',
+    //         'omschrijving' => 'nullable',
+    //         'prijs' => 'required',
+    //         'foto1' => 'nullable',
+    //         'foto2' => 'nullable'
+    //     ));
+
+    //         //store in the database
+    //     $artikel = new Artikel;
+
+    //     $artikel->artikelnaam = $request->artikelnaam;
+    //     $artikel->omschrijving = $request->omschrijving;
+    //     $artikel->prijs = $request->prijs;
+    //     $artikel->foto1 = $request->foto1;
+    //     $artikel->foto2 = $request->foto2;
+
+    //     $artikel->save();
+
+    //     //redirect to another page
+
+    //     return redirect()->route('artikels.show', $artikel->id);
+
+    // }
 
     /**
      * Display the specified resource.

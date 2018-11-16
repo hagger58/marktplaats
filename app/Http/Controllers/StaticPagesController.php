@@ -14,7 +14,7 @@ class StaticPagesController extends Controller
         # receive data back from the model
         # update the database
         # compile or proces the data from the model again if needed
-        #pass the data to the correct view
+        # pass the data to the correct view
 
 #        return "Hallo homepage";
         return view ('pages.home');
